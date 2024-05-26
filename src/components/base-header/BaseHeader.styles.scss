@@ -1,0 +1,10 @@
+.base-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  .ant-typography {
+    margin-bottom: 0;
+    text-transform: capitalize;
+  }
+}

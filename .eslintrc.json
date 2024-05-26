@@ -1,0 +1,43 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "linebreak-style": "off",
+    "no-alert": "off",
+    "no-underscore-dangle": "off",
+    "import/prefer-default-export": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "eol-last": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "state", // for Redux Toolkit
+          "acc", // for reduce accumulators
+          "e" // for e.returnvalue
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // or specify the React version you are using, e.g., "16.14.0"
+    },
+    "import/core-modules": ["@ant-design/icons"]
+  }
+}

@@ -1,0 +1,11 @@
+.auth-layout {
+  min-height: 100vh;
+  .auth-layout__container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 200px;
+  }
+  &.auth-layout--dark {
+    background: #000000;
+  }
+}

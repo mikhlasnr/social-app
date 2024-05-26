@@ -1,0 +1,19 @@
+.base-layout {
+  min-height: 100vh;
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 0;
+    text-align: center;
+
+    .anticon {
+      svg {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  }
+}
