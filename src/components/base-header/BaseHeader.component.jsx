@@ -1,41 +1,44 @@
-import { Layout, Typography, theme } from 'antd';
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useHeaderbar } from '../../hook/useHeaderbar';
-import './BaseHeader.styles.scss';
+import { Layout, Typography, theme } from 'antd'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { setTitle } from '../../store/header/header.reducer'
+import './BaseHeader.styles.scss'
 
-const { Header } = Layout;
-const { Title } = Typography;
+const { Header } = Layout
+const { Title } = Typography
 
-const isRouterLocationExist = ['/', '/leaderboards'];
+const isRouterLocationExist = ['/', '/leaderboards']
 function BaseHeader() {
   const {
-    token: { colorBgContainer }
-  } = theme.useToken();
-  const location = useLocation();
+    token: { colorBgContainer },
+  } = theme.useToken()
+  const location = useLocation()
 
-  const { title, setTitle } = useHeaderbar();
+  const title = useSelector((state) => state.headerbar.title)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isRouterLocationExist.includes(location.pathname)) {
       if (location.pathname === '/') {
-        setTitle('Threads');
+        dispatch(setTitle('Threads'))
       } else {
-        setTitle(location.pathname.replace('/', ''));
+        dispatch(location.pathname.replace('/', ''))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location])
 
   return (
     <Header
       className="base-header"
       style={{
-        background: colorBgContainer
-      }}>
+        background: colorBgContainer,
+      }}
+    >
       <Title>{title}</Title>
     </Header>
-  );
+  )
 }
 
-export default BaseHeader;
+export default BaseHeader

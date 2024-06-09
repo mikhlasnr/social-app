@@ -1,50 +1,63 @@
-import { BarChartOutlined, CommentOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Button, Flex, Layout, Menu, Skeleton, Tooltip, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hook/useAuth';
-import { useTheme } from '../../hook/useTheme';
-import './BaseSidebar.styles.scss';
+import {
+  BarChartOutlined,
+  CommentOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons'
+import {
+  Avatar,
+  Button,
+  Flex,
+  Layout,
+  Menu,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from 'antd'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hook/useAuth'
+import './BaseSidebar.styles.scss'
 
-const { Sider } = Layout;
+const { Sider } = Layout
 
 const getItem = (label, key, icon, children) => {
   return {
     key,
     icon,
     children,
-    label
-  };
-};
+    label,
+  }
+}
 
 const items = [
   getItem('Threads', '/threads', <CommentOutlined />),
-  getItem('Leaderboards', '/leaderboards', <BarChartOutlined />)
-];
+  getItem('Leaderboards', '/leaderboards', <BarChartOutlined />),
+]
 
 function BaseSidebar() {
-  const { selectedTheme } = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [selectedMenu, setselectedMenu] = useState([]);
-  const [collapsed, setCollapsed] = useState(false);
-  const { logout } = useAuth();
+  const selectedTheme = useSelector((state) => state.theme)
 
-  const { user, userStatus } = useSelector((state) => state.users);
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [selectedMenu, setselectedMenu] = useState([])
+  const [collapsed, setCollapsed] = useState(false)
+  const { logout } = useAuth()
+
+  const { user, userStatus } = useSelector((state) => state.users)
 
   const handleNavigate = ({ key }) => {
-    if (key === '/threads') navigate('/');
-    else navigate(key);
-  };
+    if (key === '/threads') navigate('/')
+    else navigate(key)
+  }
 
   useEffect(() => {
     if (location.pathname === '/') {
-      setselectedMenu(['/threads']);
+      setselectedMenu(['/threads'])
     } else {
-      setselectedMenu([location.pathname]);
+      setselectedMenu([location.pathname])
     }
-  }, [location]);
+  }, [location])
 
   return (
     <Sider
@@ -52,7 +65,8 @@ function BaseSidebar() {
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
-      className={`base-sidebar ${collapsed ? 'base-sidebar--collapsed' : ''}`}>
+      className={`base-sidebar ${collapsed ? 'base-sidebar--collapsed' : ''}`}
+    >
       <div className="base-sidebar__container">
         {userStatus === 'loading' || userStatus === 'idle' ? (
           <div className="logo">
@@ -85,16 +99,26 @@ function BaseSidebar() {
         />
         {collapsed ? (
           <Tooltip title="Logout" placement="right">
-            <Button onClick={() => logout()} block danger icon={<LogoutOutlined />} />
+            <Button
+              onClick={() => logout()}
+              block
+              danger
+              icon={<LogoutOutlined />}
+            />
           </Tooltip>
         ) : (
-          <Button onClick={() => logout()} block danger icon={<LogoutOutlined />}>
+          <Button
+            onClick={() => logout()}
+            block
+            danger
+            icon={<LogoutOutlined />}
+          >
             Logout
           </Button>
         )}
       </div>
     </Sider>
-  );
+  )
 }
 
-export default BaseSidebar;
+export default BaseSidebar

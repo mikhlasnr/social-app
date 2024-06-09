@@ -1,27 +1,27 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { hideLoading, showLoading } from 'react-redux-loading-bar'
 
 const leaderboardsInitState = {
   leaderboards: [],
   status: 'idle',
-  error: null
-};
+  error: null,
+}
 
 export const getLeaderboards = createAsyncThunk(
   'leaderboards/getLeaderboards',
   async (arg, { dispatch }) => {
     try {
-      dispatch(showLoading());
-      const response = await axios('/leaderboards');
-      return response.data;
+      dispatch(showLoading())
+      const response = await axios('/leaderboards')
+      return response.data
     } catch (error) {
-      return error;
+      return error
     } finally {
-      dispatch(hideLoading());
+      dispatch(hideLoading())
     }
-  }
-);
+  },
+)
 
 export const leaderboardsSlice = createSlice({
   name: 'leaderboards',
@@ -30,17 +30,17 @@ export const leaderboardsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getLeaderboards.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'loading'
       })
       .addCase(getLeaderboards.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.leaderboards = action.payload.data.leaderboards;
+        state.status = 'succeeded'
+        state.leaderboards = action.payload.data.leaderboards
       })
       .addCase(getLeaderboards.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      });
-  }
-});
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+  },
+})
 
-export const leaderboarsdReducer = leaderboardsSlice.reducer;
+export const leaderboarsdReducer = leaderboardsSlice.reducer

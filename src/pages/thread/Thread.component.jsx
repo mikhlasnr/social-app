@@ -1,26 +1,26 @@
-import { Alert, Card, Flex, Skeleton } from 'antd';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { BaseContainer } from '../../components/base-container/BaseContainer.component';
-import { useHeaderbar } from '../../hook/useHeaderbar';
-import { CommentList } from '../../module/thread/comment-list/CommentList.component';
-import { getThreadDetail } from '../../store/threads/threads.reducer';
-import './Thread.styles.scss';
-import { ThreadCard } from '../../module/thread/thread-card/ThreadCard';
+import { Alert, Card, Flex, Skeleton } from 'antd'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { BaseContainer } from '../../components/base-container/BaseContainer.component'
+import { CommentList } from '../../module/thread/comment-list/CommentList.component'
+import { ThreadCard } from '../../module/thread/thread-card/ThreadCard'
+import { setTitle } from '../../store/header/header.reducer'
+import { getThreadDetail } from '../../store/threads/threads.reducer'
+import './Thread.styles.scss'
 
 export function Thread() {
-  const { threadId } = useParams();
-  const { thread, status, error } = useSelector((state) => state.threads);
-  const dispatch = useDispatch();
-  const { setTitle } = useHeaderbar();
+  const { threadId } = useParams()
+  const { thread, status, error } = useSelector((state) => state.threads)
+  const dispatch = useDispatch()
+
   useEffect(() => {
     if (threadId) {
-      dispatch(getThreadDetail({ threadId }));
+      dispatch(getThreadDetail({ threadId }))
     }
-    setTitle('Thread');
+    dispatch(setTitle('Thread'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [threadId]);
+  }, [threadId])
 
   if (status === 'loading')
     return (
@@ -29,9 +29,10 @@ export function Thread() {
           <Skeleton />
         </Card>
       </BaseContainer>
-    );
+    )
 
-  if (status === 'failed') return <Alert message={error.toString()} type="error" />;
+  if (status === 'failed')
+    return <Alert message={error.toString()} type="error" />
 
   return (
     thread && (
@@ -44,5 +45,5 @@ export function Thread() {
         </div>
       </BaseContainer>
     )
-  );
+  )
 }
