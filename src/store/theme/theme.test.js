@@ -1,4 +1,14 @@
-// themeSlice.test.js
+/**
+ * Test scenario for leaderboardsSlice
+ *
+ * - leaderboarsdReducer function
+ *  - should return the initial state when given an unknown action
+ *  - should handle the getLeaderboards pending state
+ *  - should handle the getLeaderboards fulfilled state
+ *  - should handle the getLeaderboards rejected state
+ *  - should dispatch showLoading and hideLoading actions correctly
+ */
+
 import { describe, it, expect } from 'vitest'
 import { themeReducer, toggleTheme, setTheme } from './theme.reducer'
 

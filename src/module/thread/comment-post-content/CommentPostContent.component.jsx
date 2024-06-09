@@ -1,23 +1,28 @@
-import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Flex, Typography } from 'antd';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { CommentPropTypes, DetailThreadPropTypes } from '../../../types/thread';
-import { showTime } from '../../../utils';
+import {
+  DislikeFilled,
+  DislikeOutlined,
+  LikeFilled,
+  LikeOutlined,
+} from '@ant-design/icons'
+import { Avatar, Button, Card, Flex, Typography } from 'antd'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
+import { CommentPropTypes, DetailThreadPropTypes } from '../../../types/thread'
+import { showTime } from '../../../utils'
 import {
   downvoteComment,
   neutralvoteComment,
-  upvoteComment
-} from '../../../store/threads/threads.reducer';
+  upvoteComment,
+} from '../../../store/threads/threads.reducer'
 
-const { Title } = Typography;
+const { Title } = Typography
 export function CommentPostContent({ thread, comment }) {
-  const { owner, createdAt, upVotesBy, downVotesBy } = comment;
-  const { user } = useSelector((state) => state.users);
-  const isUserMeUpvote = user ? upVotesBy.includes(user.id) : false;
-  const isUserMeDownvote = user ? downVotesBy.includes(user.id) : false;
-  const dispatch = useDispatch();
+  const { owner, createdAt, upVotesBy, downVotesBy } = comment
+  const { user } = useSelector((state) => state.users)
+  const isUserMeUpvote = user ? upVotesBy.includes(user.id) : false
+  const isUserMeDownvote = user ? downVotesBy.includes(user.id) : false
+  const dispatch = useDispatch()
 
   const handleUpvote = () => {
     dispatch(
@@ -25,20 +30,20 @@ export function CommentPostContent({ thread, comment }) {
         threadId: thread.id,
         commentId: comment.id,
         userId: user.id,
-        isUserMeDownvote
-      })
-    );
-  };
+        isUserMeDownvote,
+      }),
+    )
+  }
   const handleDownvote = () => {
     dispatch(
       downvoteComment({
         threadId: thread.id,
         commentId: comment.id,
         userId: user.id,
-        isUserMeUpvote
-      })
-    );
-  };
+        isUserMeUpvote,
+      }),
+    )
+  }
   const handleNeutralVote = () => {
     dispatch(
       neutralvoteComment({
@@ -46,10 +51,10 @@ export function CommentPostContent({ thread, comment }) {
         commentId: comment.id,
         userId: user.id,
         isUserMeUpvote,
-        isUserMeDownvote
-      })
-    );
-  };
+        isUserMeDownvote,
+      }),
+    )
+  }
 
   return (
     comment && (
@@ -63,14 +68,15 @@ export function CommentPostContent({ thread, comment }) {
           </Flex>
           <Typography
             dangerouslySetInnerHTML={{
-              __html: comment.content || ''
+              __html: comment.content || '',
             }}
           />
           <Flex gap={5} align="center">
             <Button
               type="text"
               size="small"
-              onClick={isUserMeUpvote ? handleNeutralVote : handleUpvote}>
+              onClick={isUserMeUpvote ? handleNeutralVote : handleUpvote}
+            >
               <Flex align="center" gap={5}>
                 {isUserMeUpvote ? <LikeFilled /> : <LikeOutlined />}
                 <Typography>{comment.upVotesBy.length}</Typography>
@@ -79,7 +85,8 @@ export function CommentPostContent({ thread, comment }) {
             <Button
               type="text"
               size="small"
-              onClick={isUserMeDownvote ? handleNeutralVote : handleDownvote}>
+              onClick={isUserMeDownvote ? handleNeutralVote : handleDownvote}
+            >
               <Flex align="center" gap={5}>
                 {isUserMeDownvote ? <DislikeFilled /> : <DislikeOutlined />}
 
@@ -93,10 +100,10 @@ export function CommentPostContent({ thread, comment }) {
         </Flex>
       </Card>
     )
-  );
+  )
 }
 
 CommentPostContent.propTypes = {
   thread: PropTypes.shape(DetailThreadPropTypes).isRequired,
-  comment: PropTypes.shape(CommentPropTypes).isRequired
-};
+  comment: PropTypes.shape(CommentPropTypes).isRequired,
+}

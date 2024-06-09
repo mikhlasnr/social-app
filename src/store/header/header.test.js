@@ -1,11 +1,3 @@
-import { describe, it, expect } from 'vitest'
-import { headerReducer, setTitle } from './header.reducer'
-
-// Define the initial state for the tests
-const initialState = {
-  title: '',
-}
-
 /**
  * Test scenario for headerReducer
  *
@@ -15,6 +7,14 @@ const initialState = {
  *  - should handle multiple setTitle actions sequentially
  *
  */
+
+import { describe, it, expect } from 'vitest'
+import { headerReducer, setTitle } from './header.reducer'
+
+// Define the initial state for the tests
+const initialState = {
+  title: '',
+}
 
 describe('headerReducer', () => {
   it('should return the initial state when given an unknown action', () => {

@@ -3,7 +3,11 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb", "plugin:prettier/recommended"],
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -38,6 +42,10 @@
     "react": {
       "version": "detect" // or specify the React version you are using, e.g., "16.14.0"
     },
-    "import/core-modules": ["@ant-design/icons"]
+    "import/core-modules": [
+      "@ant-design/icons",
+      "axios-mock-adapter",
+      "redux-thunk"
+    ]
   }
 }
