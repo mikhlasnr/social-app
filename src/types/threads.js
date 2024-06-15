@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 export const ThreadsPropTypes = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -9,5 +9,5 @@ export const ThreadsPropTypes = PropTypes.shape({
   ownerId: PropTypes.string.isRequired,
   upVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
   downVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
-  totalComments: PropTypes.number.isRequired
-});
+  totalComments: PropTypes.number.isRequired,
+})

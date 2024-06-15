@@ -45,7 +45,8 @@
     "import/core-modules": [
       "@ant-design/icons",
       "axios-mock-adapter",
-      "redux-thunk"
+      "redux-thunk",
+      "redux-mock-store"
     ]
   }
 }

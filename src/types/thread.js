@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const OwnerPropTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired
-};
+  avatar: PropTypes.string.isRequired,
+}
 
 export const CommentPropTypes = {
   id: PropTypes.string.isRequired,
@@ -12,8 +12,8 @@ export const CommentPropTypes = {
   createdAt: PropTypes.string.isRequired,
   owner: PropTypes.shape(OwnerPropTypes).isRequired,
   upVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
-  downVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired
-};
+  downVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
 
 export const DetailThreadPropTypes = {
   id: PropTypes.string.isRequired,
@@ -24,5 +24,5 @@ export const DetailThreadPropTypes = {
   owner: PropTypes.shape(OwnerPropTypes).isRequired,
   upVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
   downVotesBy: PropTypes.arrayOf(PropTypes.string).isRequired,
-  comments: PropTypes.arrayOf(PropTypes.shape(CommentPropTypes)).isRequired
-};
+  comments: PropTypes.arrayOf(PropTypes.shape(CommentPropTypes)).isRequired,
+}
