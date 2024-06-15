@@ -17,7 +17,7 @@ describe('themeSlice reducer', () => {
     // arrange
     const initialState = 'light'
 
-    // act
+    // action
     const state = themeReducer(undefined, { type: '@@INIT' })
 
     // assert
@@ -28,13 +28,13 @@ describe('themeSlice reducer', () => {
     // arrange
     const initialState = 'light'
 
-    // act
+    // action
     const state = themeReducer(initialState, toggleTheme())
 
     // assert
     expect(state).toBe('dark')
 
-    // act
+    // action
     const newState = themeReducer(state, toggleTheme())
 
     // assert
@@ -46,7 +46,7 @@ describe('themeSlice reducer', () => {
     const initialState = 'light'
     const newTheme = 'dark'
 
-    // act
+    // action
     const state = themeReducer(initialState, setTheme(newTheme))
 
     // assert
@@ -58,7 +58,7 @@ describe('themeSlice reducer', () => {
     const initialState = 'dark'
     const newTheme = 'light'
 
-    // act
+    // action
     const state = themeReducer(initialState, setTheme(newTheme))
 
     // assert

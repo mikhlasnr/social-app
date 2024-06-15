@@ -2,7 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { getLeaderboards, leaderboardsReducer } from './leaderboards.reducer'
+import { getLeaderboards, leaderboardsReducer } from './leaderboards.reducer' // Ganti dengan path yang benar
 
 const initialState = {
   leaderboards: [],
@@ -42,12 +42,11 @@ const fakeErrorResponse = new Error('Network Error')
 /**
  * Skenario testing
  *
- * - talkReducers function
- *  - should return the initial state when given by unknown action
- *  - should return the talks when given by RECEIVE_TALKS action
- *  - should return the talks with the new talk when given by ADD_TALK action
- *  - should return the talks with the toggled like talk when given by TOGGLE_LIKE_TALK action
- *
+ * - leaderboardsReducer function
+ *  - should return the initial state when given an unknown action
+ *  - should handle the getLeaderboards pending state
+ *  - should handle the getLeaderboards fulfilled state
+ *  - should handle the getLeaderboards rejected state
  */
 describe('leaderboardsReducer', () => {
   let mockAxios
@@ -61,24 +60,39 @@ describe('leaderboardsReducer', () => {
   })
 
   it('should return the initial state when given an unknown action', () => {
+    // Arrange
     const action = { type: 'UNKNOWN_ACTION' }
+
+    // Action
     const nextState = leaderboardsReducer(undefined, action)
+
+    // Assert
     expect(nextState).toEqual(initialState)
   })
 
   it('should handle the getLeaderboards pending state', () => {
+    // Arrange
     const action = { type: getLeaderboards.pending.type }
+
+    // Action
     const nextState = leaderboardsReducer(initialState, action)
+
+    // Assert
     expect(nextState.status).toBe('loading')
     expect(nextState.error).toBe(null)
   })
 
   it('should handle the getLeaderboards fulfilled state', () => {
+    // Arrange
     const action = {
       type: getLeaderboards.fulfilled.type,
       payload: fakeLeaderboardsResponse,
     }
+
+    // Action
     const nextState = leaderboardsReducer(initialState, action)
+
+    // Assert
     expect(nextState.status).toBe('succeeded')
     expect(nextState.leaderboards).toEqual(
       fakeLeaderboardsResponse.data.leaderboards,
@@ -87,11 +101,16 @@ describe('leaderboardsReducer', () => {
   })
 
   it('should handle the getLeaderboards rejected state', () => {
+    // Arrange
     const action = {
       type: getLeaderboards.rejected.type,
       error: fakeErrorResponse,
     }
+
+    // Action
     const nextState = leaderboardsReducer(initialState, action)
+
+    // Assert
     expect(nextState.status).toBe('failed')
     expect(nextState.error).toBe(fakeErrorResponse.message)
   })
@@ -146,7 +165,6 @@ describe('leaderboardsThunk', () => {
 
     // Assert
     expect(dispatch).toHaveBeenCalledWith(showLoading())
-    expect(dispatch).toHaveBeenCalledWith(hideLoading())
 
     const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
     expect(dispatchedActions).toEqual(
@@ -161,10 +179,14 @@ describe('leaderboardsThunk', () => {
           type: 'loading-bar/HIDE',
         }),
         expect.objectContaining({
-          type: 'leaderboards/getLeaderboards/fulfilled',
-          payload: expect.any(Error), // Expect an error object in the payload
+          type: 'leaderboards/getLeaderboards/rejected',
+          error: expect.objectContaining({
+            message: fakeErrorResponse.message,
+          }),
         }),
       ]),
     )
+
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
   })
 })

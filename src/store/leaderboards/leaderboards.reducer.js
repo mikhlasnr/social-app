@@ -16,7 +16,7 @@ export const getLeaderboards = createAsyncThunk(
       const response = await axios('/leaderboards')
       return response.data
     } catch (error) {
-      return error
+      throw new Error(error.response?.data?.message || error.message)
     } finally {
       dispatch(hideLoading())
     }
