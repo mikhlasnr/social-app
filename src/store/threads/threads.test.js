@@ -1,7 +1,7 @@
 /**
- * Test scenario for threadsReducer
+ * skenario test
  *
- * - threadsReducer function
+ * - threadsReducer reducer
  *  - should return the initial state when given an unknown action
  *  - should handle the getThreads pending state
  *  - should handle the getThreads fulfilled state

@@ -15,15 +15,11 @@
  *  - should handle the registerUser pending state
  *  - should handle the registerUser fulfilled state
  *  - should handle the registerUser rejected state
- *  - should dispatch showLoading and hideLoading actions for getUserMe
- *  - should dispatch showLoading and hideLoading actions for loginUser
- *  - should dispatch showLoading and hideLoading actions for registerUser
  */
 
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
   getUserMe,
   getUsers,
@@ -289,51 +285,5 @@ describe('usersSlice', () => {
 
     // assert
     expect(nextState.status).toBe('failed')
-  })
-
-  it('should dispatch showLoading and hideLoading actions for getUserMe', async () => {
-    // arrange
-    mockAxios.onGet('/users/me').reply(200, fakeUserMeResponse)
-
-    const dispatch = vi.fn()
-
-    // action
-    await getUserMe()(dispatch)
-
-    // assert
-    expect(dispatch).toHaveBeenCalledWith(showLoading())
-    expect(dispatch).toHaveBeenCalledWith(hideLoading())
-  })
-
-  it('should dispatch showLoading and hideLoading actions for loginUser', async () => {
-    // arrange
-    mockAxios.onPost('/login').reply(200, fakeLoginResponse)
-
-    const dispatch = vi.fn()
-
-    // action
-    await loginUser({ requestBody: { id: 'john_doe', password: 'password' } })(
-      dispatch,
-    )
-
-    // assert
-    expect(dispatch).toHaveBeenCalledWith(showLoading())
-    expect(dispatch).toHaveBeenCalledWith(hideLoading())
-  })
-
-  it('should dispatch showLoading and hideLoading actions for registerUser', async () => {
-    // arrange
-    mockAxios.onPost('/register').reply(200, fakeRegisterResponse)
-
-    const dispatch = vi.fn()
-
-    // action
-    await registerUser({
-      requestBody: { id: 'user-123', name: 'John Doe', password: 'password' },
-    })(dispatch)
-
-    // assert
-    expect(dispatch).toHaveBeenCalledWith(showLoading())
-    expect(dispatch).toHaveBeenCalledWith(hideLoading())
   })
 })

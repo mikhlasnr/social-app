@@ -1,7 +1,7 @@
 /**
  * Test scenario for leaderboardsSlice
  *
- * - leaderboarsdReducer function
+ * - leaderboardsReducer function
  *  - should return the initial state when given an unknown action
  *  - should handle the getLeaderboards pending state
  *  - should handle the getLeaderboards fulfilled state

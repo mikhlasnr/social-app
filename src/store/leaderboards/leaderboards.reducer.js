@@ -43,4 +43,4 @@ export const leaderboardsSlice = createSlice({
   },
 })
 
-export const leaderboarsdReducer = leaderboardsSlice.reducer
+export const leaderboardsReducer = leaderboardsSlice.reducer

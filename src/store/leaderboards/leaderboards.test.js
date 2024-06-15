@@ -2,7 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { getLeaderboards, leaderboarsdReducer } from './leaderboards.reducer' // Ganti dengan path yang benar
+import { getLeaderboards, leaderboardsReducer } from './leaderboards.reducer'
 
 const initialState = {
   leaderboards: [],
@@ -39,7 +39,17 @@ const fakeLeaderboardsResponse = {
 
 const fakeErrorResponse = new Error('Network Error')
 
-describe('leaderboardsSlice', () => {
+/**
+ * Skenario testing
+ *
+ * - talkReducers function
+ *  - should return the initial state when given by unknown action
+ *  - should return the talks when given by RECEIVE_TALKS action
+ *  - should return the talks with the new talk when given by ADD_TALK action
+ *  - should return the talks with the toggled like talk when given by TOGGLE_LIKE_TALK action
+ *
+ */
+describe('leaderboardsReducer', () => {
   let mockAxios
 
   beforeEach(() => {
@@ -52,13 +62,13 @@ describe('leaderboardsSlice', () => {
 
   it('should return the initial state when given an unknown action', () => {
     const action = { type: 'UNKNOWN_ACTION' }
-    const nextState = leaderboarsdReducer(undefined, action)
+    const nextState = leaderboardsReducer(undefined, action)
     expect(nextState).toEqual(initialState)
   })
 
   it('should handle the getLeaderboards pending state', () => {
     const action = { type: getLeaderboards.pending.type }
-    const nextState = leaderboarsdReducer(initialState, action)
+    const nextState = leaderboardsReducer(initialState, action)
     expect(nextState.status).toBe('loading')
     expect(nextState.error).toBe(null)
   })
@@ -68,7 +78,7 @@ describe('leaderboardsSlice', () => {
       type: getLeaderboards.fulfilled.type,
       payload: fakeLeaderboardsResponse,
     }
-    const nextState = leaderboarsdReducer(initialState, action)
+    const nextState = leaderboardsReducer(initialState, action)
     expect(nextState.status).toBe('succeeded')
     expect(nextState.leaderboards).toEqual(
       fakeLeaderboardsResponse.data.leaderboards,
@@ -81,18 +91,80 @@ describe('leaderboardsSlice', () => {
       type: getLeaderboards.rejected.type,
       error: fakeErrorResponse,
     }
-    const nextState = leaderboarsdReducer(initialState, action)
+    const nextState = leaderboardsReducer(initialState, action)
     expect(nextState.status).toBe('failed')
     expect(nextState.error).toBe(fakeErrorResponse.message)
   })
+})
 
-  it('should dispatch showLoading and hideLoading actions correctly', async () => {
+describe('leaderboardsThunk', () => {
+  let mockAxios
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+  })
+
+  afterEach(() => {
+    mockAxios.reset()
+  })
+
+  it('should dispatch action correctly when data fetching success', async () => {
+    // Arrange
     mockAxios.onGet('/leaderboards').reply(200, fakeLeaderboardsResponse)
-
     const dispatch = vi.fn()
+
+    // Action
     await getLeaderboards()(dispatch)
 
+    // Assert
     expect(dispatch).toHaveBeenCalledWith(showLoading())
     expect(dispatch).toHaveBeenCalledWith(hideLoading())
+
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'leaderboards/getLeaderboards/pending',
+        }),
+        expect.objectContaining({
+          type: 'leaderboards/getLeaderboards/fulfilled',
+          payload: fakeLeaderboardsResponse,
+        }),
+      ]),
+    )
+  })
+
+  it('should dispatch action correctly when data fetching fails', async () => {
+    // Arrange
+    mockAxios
+      .onGet('/leaderboards')
+      .reply(500, { message: fakeErrorResponse.message })
+    const dispatch = vi.fn()
+
+    // Action
+    await getLeaderboards()(dispatch)
+
+    // Assert
+    expect(dispatch).toHaveBeenCalledWith(showLoading())
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
+
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'leaderboards/getLeaderboards/pending',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/SHOW',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/HIDE',
+        }),
+        expect.objectContaining({
+          type: 'leaderboards/getLeaderboards/fulfilled',
+          payload: expect.any(Error), // Expect an error object in the payload
+        }),
+      ]),
+    )
   })
 })
