@@ -1,67 +1,87 @@
-/**
- * Test scenario for leaderboardsSlice
- *
- * - leaderboardsReducer function
- *  - should return the initial state when given an unknown action
- *  - should handle the getLeaderboards pending state
- *  - should handle the getLeaderboards fulfilled state
- *  - should handle the getLeaderboards rejected state
- *  - should dispatch showLoading and hideLoading actions correctly
- */
-
 import { describe, it, expect } from 'vitest'
 import { themeReducer, toggleTheme, setTheme } from './theme.reducer'
 
-describe('themeSlice reducer', () => {
+/**
+ * Test Scenario for themeReducer
+ *
+ * - themeReducer function
+ *   - should return the initial state
+ *   - should handle toggleTheme action
+ *   - should handle setTheme action to dark
+ *   - should handle setTheme action to light
+ *   - should handle two consecutive toggleTheme actions
+ */
+
+describe('themeReducer function', () => {
   it('should return the initial state', () => {
-    // arrange
+    // Arrange
     const initialState = 'light'
 
-    // action
+    // Action
     const state = themeReducer(undefined, { type: '@@INIT' })
 
-    // assert
+    // Assert
     expect(state).toBe(initialState)
   })
 
   it('should handle toggleTheme action', () => {
-    // arrange
+    // Arrange
     const initialState = 'light'
 
-    // action
+    // Action
     const state = themeReducer(initialState, toggleTheme())
 
-    // assert
+    // Assert
     expect(state).toBe('dark')
 
-    // action
+    // Action
     const newState = themeReducer(state, toggleTheme())
 
-    // assert
+    // Assert
     expect(newState).toBe('light')
   })
 
   it('should handle setTheme action to dark', () => {
-    // arrange
+    // Arrange
     const initialState = 'light'
     const newTheme = 'dark'
 
-    // action
+    // Action
     const state = themeReducer(initialState, setTheme(newTheme))
 
-    // assert
+    // Assert
     expect(state).toBe(newTheme)
   })
 
   it('should handle setTheme action to light', () => {
-    // arrange
+    // Arrange
     const initialState = 'dark'
     const newTheme = 'light'
 
-    // action
+    // Action
     const state = themeReducer(initialState, setTheme(newTheme))
 
-    // assert
+    // Assert
     expect(state).toBe(newTheme)
+  })
+
+  it('should handle two consecutive toggleTheme actions', () => {
+    // Arrange
+    const initialState = 'light'
+
+    // Action - First Toggle
+    const stateAfterFirstToggle = themeReducer(initialState, toggleTheme())
+
+    // Assert - First Toggle
+    expect(stateAfterFirstToggle).toBe('dark')
+
+    // Action - Second Toggle
+    const stateAfterSecondToggle = themeReducer(
+      stateAfterFirstToggle,
+      toggleTheme(),
+    )
+
+    // Assert - Second Toggle
+    expect(stateAfterSecondToggle).toBe('light')
   })
 })

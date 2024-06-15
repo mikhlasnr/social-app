@@ -1,5 +1,5 @@
 /**
- * Test scenario for headerReducer
+ * Test Scenario for headerReducer
  *
  * - headerReducer function
  *  - should return the initial state when given an unknown action
@@ -18,45 +18,61 @@ const initialState = {
 
 describe('headerReducer', () => {
   it('should return the initial state when given an unknown action', () => {
-    // arrange
+    // Arrange
     const action = { type: 'UNKNOWN_ACTION' }
 
-    // action
+    // Action
     const nextState = headerReducer(undefined, action)
 
-    // assert
+    // Assert
     expect(nextState).toEqual(initialState)
   })
 
   it('should set the title when given the setTitle action', () => {
-    // arrange
+    // Arrange
     const newTitle = 'New Title'
     const action = setTitle(newTitle)
 
-    // action
+    // Action
     const nextState = headerReducer(initialState, action)
 
-    // assert
+    // Assert
     expect(nextState.title).toBe(newTitle)
   })
 
   it('should handle multiple setTitle actions sequentially', () => {
-    // arrange
+    // Arrange
     const firstTitle = 'First Title'
     const secondTitle = 'Second Title'
     const firstAction = setTitle(firstTitle)
     const secondAction = setTitle(secondTitle)
 
-    // action
-    let nextState = headerReducer(initialState, firstAction)
+    // Action
+    const firstState = headerReducer(initialState, firstAction)
 
-    // assert
-    expect(nextState.title).toBe(firstTitle)
+    // Assert
+    expect(firstState.title).toBe(firstTitle)
 
-    // action
-    nextState = headerReducer(nextState, secondAction)
+    // Action
+    const secondState = headerReducer(firstState, secondAction)
 
-    // assert
-    expect(nextState.title).toBe(secondTitle)
+    // Assert
+    expect(secondState.title).toBe(secondTitle)
+  })
+
+  it('should handle multiple setTitle actions sequentially with immediate checks', () => {
+    // Arrange
+    const firstTitle = 'First Title'
+    const secondTitle = 'Second Title'
+
+    // Action
+    const firstState = headerReducer(initialState, setTitle(firstTitle))
+    // Assert
+    expect(firstState.title).toBe(firstTitle)
+
+    // Action
+    const secondState = headerReducer(firstState, setTitle(secondTitle))
+    // Assert
+    expect(secondState.title).toBe(secondTitle)
   })
 })
