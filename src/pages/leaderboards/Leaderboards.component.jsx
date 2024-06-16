@@ -11,6 +11,7 @@ export function Leaderboards() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getLeaderboards())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const columns = [

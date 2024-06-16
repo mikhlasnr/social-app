@@ -1,11 +1,11 @@
-import { Button, Result, theme } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Result, theme } from 'antd'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 function NotFound() {
   const {
-    token: { colorBgContainer, borderRadiusLG }
-  } = theme.useToken();
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken()
   return (
     <div style={{ background: colorBgContainer, borderRadius: borderRadiusLG }}>
       <Result
@@ -19,7 +19,7 @@ function NotFound() {
         }
       />
     </div>
-  );
+  )
 }
 
-export default NotFound;
+export default NotFound

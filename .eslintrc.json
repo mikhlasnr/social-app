@@ -16,7 +16,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react", "react-hooks", "prettier", "cypress"],
   "rules": {
     "linebreak-style": "off",
     "no-alert": "off",
@@ -47,7 +47,8 @@
       "@ant-design/icons",
       "axios-mock-adapter",
       "redux-thunk",
-      "redux-mock-store"
+      "redux-mock-store",
+      "cypress"
     ]
   }
 }
