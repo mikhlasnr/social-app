@@ -80,11 +80,11 @@ function BaseSidebar() {
           </div>
         ) : (
           <div className="logo">
-            <Avatar src={user.avatar} size={80} />
+            <Avatar src={user?.avatar || undefined} size={80} />
             {collapsed ? null : (
               <Flex vertical gap={5}>
-                <Typography>{user.name}</Typography>
-                <Typography>{user.email}</Typography>
+                <Typography>{user?.name || ''}</Typography>
+                <Typography>{user?.email || ''}</Typography>
               </Flex>
             )}
           </div>
