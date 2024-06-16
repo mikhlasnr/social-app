@@ -7,20 +7,16 @@ export function LoginForm({ onFinish, status }) {
   return (
     <Form name="login" onFinish={onFinish} layout="vertical" scrollToFirstError>
       <Form.Item
-        label="Email"
-        name="email"
+        label="name"
+        name="name"
         rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
           {
             required: true,
             message: 'Please input your E-mail!',
           },
         ]}
       >
-        <Input placeholder="Email" />
+        <Input placeholder="name" />
       </Form.Item>
 
       <Form.Item
