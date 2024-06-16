@@ -11,7 +11,8 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "test": "vitest",
-    "e2e": "cypress run"
+    "e2e": "cypress run",
+    "ci:test": "vitest --no-watch && start-server-and-test dev http://localhost:5173/ e2e"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
