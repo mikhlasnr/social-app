@@ -40,7 +40,7 @@ const fakeLeaderboardsResponse = {
 const fakeErrorResponse = new Error('Network Error')
 
 /**
- * Skenario testing
+ * Test Scenario leaderboardReducer
  *
  * - leaderboardsReducer function
  *  - should return the initial state when given an unknown action
@@ -116,7 +116,14 @@ describe('leaderboardsReducer', () => {
   })
 })
 
-describe('leaderboardsThunk', () => {
+/**
+ * Test Scenario leaderboardsThunk
+ *
+ * - leaderboardsThunk function
+ *  - should dispatch action correctly when data fetching success
+ *  - should dispatch action correctly when data fetching fails
+ */
+describe('leaderboardsThunk function', () => {
   let mockAxios
 
   beforeEach(() => {

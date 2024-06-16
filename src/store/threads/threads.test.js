@@ -1,16 +1,3 @@
-/**
- * skenario test
- *
- * - threadsReducer reducer
- *  - should return the initial state when given an unknown action
- *  - should handle the getThreads pending state
- *  - should handle the getThreads fulfilled state
- *  - should handle the getThreads rejected state
- *  - should handle the getThreadDetail pending state
- *  - should handle the getThreadDetail fulfilled state
- *  - should handle the getThreadDetail rejected state
- */
-
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -91,7 +78,20 @@ const fakeThreadDetailResponse = {
 
 const fakeErrorResponse = new Error('Network Error')
 
-describe('threadsSlice', () => {
+/**
+ * Test Scenario for threadsReducer
+ *
+ * - threadsReducer function
+ *  - should return the initial state when given an unknown action
+ *  - should handle the getThreads pending state
+ *  - should handle the getThreads fulfilled state
+ *  - should handle the getThreads rejected state
+ *  - should handle the getThreadDetail pending state
+ *  - should handle the getThreadDetail fulfilled state
+ *  - should handle the getThreadDetail rejected state
+ */
+
+describe('threadsReducer function', () => {
   let mockAxios
 
   beforeEach(() => {

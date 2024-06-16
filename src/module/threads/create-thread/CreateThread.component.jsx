@@ -1,45 +1,45 @@
-import { Button, Flex, Form, Input, Modal, message } from 'antd';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { postThreads } from '../../../store/threads/threads.reducer';
+import { Button, Flex, Form, Input, Modal, message } from 'antd'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { postThreads } from '../../../store/threads/threads.reducer'
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 export function CreateThread() {
-  const [form] = Form.useForm();
-  const [isOpen, setIsOpen] = useState(false);
+  const [form] = Form.useForm()
+  const [isOpen, setIsOpen] = useState(false)
   const handleOpen = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
   const handleCancel = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useDispatch()
   const postThread = async (values) => {
-    const { title, body, category } = values;
-    let requestBody = { title, body };
-    if (category) requestBody = { ...requestBody, category };
+    const { title, body, category } = values
+    let requestBody = { title, body }
+    if (category) requestBody = { ...requestBody, category }
 
     try {
-      setIsLoading(true);
-      dispatch(postThreads({ requestBody }));
-      form.resetFields();
-      message.success('Thread created successfully');
-      setIsOpen(false);
+      setIsLoading(true)
+      dispatch(postThreads({ requestBody }))
+      form.resetFields()
+      message.success('Thread created successfully')
+      setIsOpen(false)
     } catch (error) {
-      message.error('Thread created failed');
+      message.error('Thread created failed')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const onFinish = (values) => {
     if (values) {
-      postThread(values);
+      postThread(values)
     }
-  };
+  }
 
   return (
     <>
@@ -51,7 +51,8 @@ export function CreateThread() {
         maskClosable={false}
         title="Create Thread"
         onCancel={handleCancel}
-        footer={null}>
+        footer={null}
+      >
         <Form
           form={form}
           name="form-note"
@@ -62,18 +63,20 @@ export function CreateThread() {
             requiredMarkValue: true,
             layout: 'vertical',
             title: '',
-            body: ''
+            body: '',
           }}
-          disabled={isLoading}>
+          disabled={isLoading}
+        >
           <Form.Item
             label="Title"
             name="title"
             rules={[
               {
                 required: true,
-                message: 'Please input title!'
-              }
-            ]}>
+                message: 'Please input title!',
+              },
+            ]}
+          >
             <Input size="large" />
           </Form.Item>
           <Form.Item
@@ -82,9 +85,10 @@ export function CreateThread() {
             rules={[
               {
                 required: true,
-                message: 'Please input content'
-              }
-            ]}>
+                message: 'Please input content',
+              },
+            ]}
+          >
             <TextArea size="large" autoSize={{ minRows: 2, maxRows: 6 }} />
           </Form.Item>
           <Form.Item label="Category" name="category">
@@ -96,7 +100,12 @@ export function CreateThread() {
               <Button size="large" onClick={handleCancel} disabled={isLoading}>
                 Cancel
               </Button>
-              <Button size="large" type="primary" htmlType="submit" loading={isLoading}>
+              <Button
+                size="large"
+                type="primary"
+                htmlType="submit"
+                loading={isLoading}
+              >
                 Create
               </Button>
             </Flex>
@@ -104,5 +113,5 @@ export function CreateThread() {
         </Form>
       </Modal>
     </>
-  );
+  )
 }

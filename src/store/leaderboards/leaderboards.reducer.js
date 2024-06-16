@@ -16,7 +16,7 @@ export const getLeaderboards = createAsyncThunk(
       const response = await axios('/leaderboards')
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data?.message || error.message)
+      throw new Error(error?.response?.data?.message || error?.message || '')
     } finally {
       dispatch(hideLoading())
     }
@@ -38,7 +38,7 @@ export const leaderboardsSlice = createSlice({
       })
       .addCase(getLeaderboards.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message
+        state.error = action?.error?.message || ''
       })
   },
 })

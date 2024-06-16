@@ -10,11 +10,20 @@ const usersInitState = {
   error: null,
 }
 
-export const getUsers = createAsyncThunk('users/getUsers', async () => {
-  const response = await axios('/users')
-  return response.data
-})
-
+export const getUsers = createAsyncThunk(
+  'users/getUsers',
+  async (arg, { dispatch }) => {
+    try {
+      dispatch(showLoading())
+      const response = await axios('/users')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || error.message)
+    } finally {
+      dispatch(hideLoading())
+    }
+  },
+)
 export const getUserMe = createAsyncThunk(
   'users/getUserMe',
   async (arg, { dispatch }) => {
@@ -23,7 +32,7 @@ export const getUserMe = createAsyncThunk(
       const response = await axios('/users/me')
       return response.data
     } catch (error) {
-      return error
+      throw new Error(error.response?.data?.message || error.message)
     } finally {
       dispatch(hideLoading())
     }
@@ -78,6 +87,7 @@ export const usersSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+
       .addCase(getUserMe.pending, (state) => {
         state.error = null
         state.userStatus = 'loading'
@@ -90,6 +100,7 @@ export const usersSlice = createSlice({
         state.error = action.error.message
         state.userStatus = 'failed'
       })
+
       .addCase(loginUser.pending, (state) => {
         state.error = null
         state.status = 'loading'
@@ -100,6 +111,7 @@ export const usersSlice = createSlice({
       .addCase(loginUser.rejected, (state) => {
         state.status = 'failed'
       })
+
       .addCase(registerUser.pending, (state) => {
         state.error = null
         state.status = 'loading'

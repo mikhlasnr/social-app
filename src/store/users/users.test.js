@@ -1,25 +1,7 @@
-/**
- * Test scenario for usersReducer
- *
- * - usersReducer function
- *  - should return the initial state when given an unknown action
- *  - should handle the getUsers pending state
- *  - should handle the getUsers fulfilled state
- *  - should handle the getUsers rejected state
- *  - should handle the getUserMe pending state
- *  - should handle the getUserMe fulfilled state
- *  - should handle the getUserMe rejected state
- *  - should handle the loginUser pending state
- *  - should handle the loginUser fulfilled state
- *  - should handle the loginUser rejected state
- *  - should handle the registerUser pending state
- *  - should handle the registerUser fulfilled state
- *  - should handle the registerUser rejected state
- */
-
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { hideLoading, showLoading } from 'react-redux-loading-bar'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getUserMe,
   getUsers,
@@ -100,7 +82,25 @@ const fakeRegisterResponse = {
 
 const fakeErrorResponse = new Error('Network Error')
 
-describe('usersSlice', () => {
+/**
+ * Test Scenario for usersReducer
+ *
+ * - usersReducer function
+ *  - should return the initial state when given an unknown action
+ *  - should handle the getUsers pending state
+ *  - should handle the getUsers fulfilled state
+ *  - should handle the getUsers rejected state
+ *  - should handle the getUserMe pending state
+ *  - should handle the getUserMe fulfilled state
+ *  - should handle the getUserMe rejected state
+ *  - should handle the loginUser pending state
+ *  - should handle the loginUser fulfilled state
+ *  - should handle the loginUser rejected state
+ *  - should handle the registerUser pending state
+ *  - should handle the registerUser fulfilled state
+ *  - should handle the registerUser rejected state
+ */
+describe('usersReducer function', () => {
   let mockAxios
 
   beforeEach(() => {
@@ -285,5 +285,165 @@ describe('usersSlice', () => {
 
     // assert
     expect(nextState.status).toBe('failed')
+  })
+})
+
+/**
+ * Test Scenario getUsersThunk function
+ *
+ * - getUsersThunk function
+ *  - should dispatch action correctly when data fetching success
+ *  - should dispatch action correctly when data fetching fails
+ */
+describe('getUsersThunk function', () => {
+  let mockAxios
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+  })
+
+  afterEach(() => {
+    mockAxios.reset()
+  })
+
+  it('should dispatch action correctly when data fetching success', async () => {
+    // Arrange
+    mockAxios.onGet('/users').reply(200, fakeUsersResponse)
+    const dispatch = vi.fn()
+
+    // Action
+    await getUsers()(dispatch)
+
+    // Assert
+    expect(dispatch).toHaveBeenCalledWith(showLoading())
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'users/getUsers/pending',
+        }),
+        expect.objectContaining({
+          type: 'users/getUsers/fulfilled',
+          payload: fakeUsersResponse,
+        }),
+      ]),
+    )
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
+  })
+
+  it('should dispatch action correctly when data fetching fails', async () => {
+    // Arrange
+    mockAxios.onGet('/users').reply(500, { message: fakeErrorResponse.message })
+    const dispatch = vi.fn()
+
+    // Action
+    await getUsers()(dispatch)
+
+    // Assert
+    expect(dispatch).toHaveBeenCalledWith(showLoading())
+
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'users/getUsers/pending',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/SHOW',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/HIDE',
+        }),
+        expect.objectContaining({
+          type: 'users/getUsers/rejected',
+          error: expect.objectContaining({
+            message: fakeErrorResponse.message,
+          }),
+        }),
+      ]),
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
+  })
+})
+
+/**
+ * Test Scenario getUserMeThunk function
+ *
+ * - getUserMeThunk function
+ *  - should dispatch action correctly when data fetching success
+ *  - should dispatch action correctly when data fetching fails
+ */
+describe('getUserMeThunk function', () => {
+  let mockAxios
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+  })
+
+  afterEach(() => {
+    mockAxios.reset()
+  })
+
+  it('should dispatch action correctly when data fetching success', async () => {
+    // Arrange
+    mockAxios.onGet('/users/me').reply(200, fakeUserMeResponse)
+    const dispatch = vi.fn()
+
+    // Action
+    await getUserMe()(dispatch)
+
+    // Assert
+    expect(dispatch).toHaveBeenCalledWith(showLoading())
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'users/getUserMe/pending',
+        }),
+        expect.objectContaining({
+          type: 'users/getUserMe/fulfilled',
+          payload: fakeUserMeResponse,
+        }),
+      ]),
+    )
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
+  })
+
+  it('should dispatch action correctly when data fetching fails', async () => {
+    // Arrange
+    mockAxios
+      .onGet('/users/me')
+      .reply(500, { message: fakeErrorResponse.message })
+    const dispatch = vi.fn()
+
+    // Action
+    await getUserMe()(dispatch)
+
+    // Assert
+    expect(dispatch).toHaveBeenCalledWith(showLoading())
+
+    const dispatchedActions = dispatch.mock.calls.map((call) => call[0])
+    expect(dispatchedActions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'users/getUserMe/pending',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/SHOW',
+        }),
+        expect.objectContaining({
+          type: 'loading-bar/HIDE',
+        }),
+        expect.objectContaining({
+          type: 'users/getUserMe/rejected',
+          error: expect.objectContaining({
+            message: fakeErrorResponse.message,
+          }),
+        }),
+      ]),
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(hideLoading())
   })
 })

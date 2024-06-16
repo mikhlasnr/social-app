@@ -15,7 +15,7 @@ function BaseHeader() {
   } = theme.useToken()
   const location = useLocation()
 
-  const title = useSelector((state) => state.headerbar.title)
+  const { title } = useSelector((state) => state.header)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function BaseHeader() {
       if (location.pathname === '/') {
         dispatch(setTitle('Threads'))
       } else {
-        dispatch(location.pathname.replace('/', ''))
+        dispatch(setTitle(location.pathname.replace('/', '')))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
